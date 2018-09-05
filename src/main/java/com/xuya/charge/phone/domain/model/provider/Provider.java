@@ -1,4 +1,4 @@
-package com.xuya.charge.phone.domain.model.Provider;
+package com.xuya.charge.phone.domain.model.provider;
 
 public class Provider {
 

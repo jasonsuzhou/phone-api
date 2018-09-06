@@ -1,3 +1,4 @@
 # phone-api
-话费充值平台接口
+Reference
 http://blog.didispace.com/impl-ddd-event/
+http://www.cnblogs.com/mienreal/p/4528470.html

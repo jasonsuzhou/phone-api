@@ -12,10 +12,16 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	public WhiteIPChecker getWhiteIPChecker() {
 		return new WhiteIPChecker();
 	}
+	
+	@Bean
+	public QueryLimitInterceptor getQueryLimitInterceptor() {
+		return new QueryLimitInterceptor();
+	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(getWhiteIPChecker()).addPathPatterns("/**");
+		registry.addInterceptor(getQueryLimitInterceptor()).addPathPatterns("/api/customer/balance","/api/order/result");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 

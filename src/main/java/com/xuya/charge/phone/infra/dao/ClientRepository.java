@@ -9,4 +9,6 @@ import com.xuya.charge.phone.infra.dao.entity.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>, JpaSpecificationExecutor<Client> {
 	
+	
+	
 }

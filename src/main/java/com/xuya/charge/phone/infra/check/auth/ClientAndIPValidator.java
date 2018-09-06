@@ -2,40 +2,25 @@ package com.xuya.charge.phone.infra.check.auth;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.xuya.charge.phone.infra.dao.ClientRepository;
-import com.xuya.charge.phone.infra.dao.WhiteIPRepository;
-import com.xuya.charge.phone.infra.dao.entity.Client;
-import com.xuya.charge.phone.infra.dao.entity.WhiteIP;
+import com.xuya.charge.phone.infra.cache.guava.ClientCache;
+import com.xuya.charge.phone.infra.cache.guava.WhiteIPCache;
 
 @Component
 public class ClientAndIPValidator {
-	
-	@Autowired
-	private ClientRepository clientRepository;
-	
-	@Autowired
-	private WhiteIPRepository whiteIPRepository;
 	
 	public String isValid(String cid, String ip) {
 		if (StringUtils.isBlank(cid)) {
 			return "client id is not valid";
 		}
-		Long clientId = Long.valueOf(cid);
-		// TODO need get from cache
-		Optional<Client> oclient = this.clientRepository.findById(clientId);
-		if (!oclient.isPresent()) {
+		if (StringUtils.isBlank(ClientCache.get(cid))) {
 			return "client id is not valid";
 		} else {
-			// TODO need get from cache
-			Optional<WhiteIP> owhiteIP = this.whiteIPRepository.findById(clientId);
-			if (owhiteIP.isPresent()) {
-				String ips = owhiteIP.get().getIps();
+			String ips = WhiteIPCache.get(cid);
+			if (StringUtils.isNotBlank(ips)) {
 				boolean valid = isValidIP(ips, ip);
 				if (!valid) {
 					return "ip address is not valid";

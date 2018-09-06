@@ -10,7 +10,7 @@ public class Client {
 
 	private Long id;
 	private String secret;
-
+	
 	public Client(Long id, String secret) {
 		this.id = id;
 		this.secret = secret;

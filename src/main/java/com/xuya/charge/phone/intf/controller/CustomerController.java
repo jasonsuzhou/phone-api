@@ -18,6 +18,7 @@ import com.xuya.charge.phone.intf.dto.Result;
 import com.xuya.charge.phone.intf.exception.RestfulRequestException;
 
 @RestController
+@RequestMapping("/api/customer")
 public class CustomerController {
 	
 	@Autowired

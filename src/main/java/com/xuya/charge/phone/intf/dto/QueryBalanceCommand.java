@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 public class QueryBalanceCommand {
 
-	@NotNull(message = "client id cannot be null")
+	@NotNull(message = "client id cannot be empty")
 	private Long cid;
 	@NotBlank(message = "sign cannot be empty")
 	private String sign;

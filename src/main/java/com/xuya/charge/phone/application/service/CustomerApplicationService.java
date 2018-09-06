@@ -8,5 +8,5 @@ import com.xuya.charge.phone.intf.dto.QueryBalanceCommand;
 public interface CustomerApplicationService {
 	
 	BigDecimal currentBalance(QueryBalanceCommand command) throws ApplicationException;
-
+	
 }

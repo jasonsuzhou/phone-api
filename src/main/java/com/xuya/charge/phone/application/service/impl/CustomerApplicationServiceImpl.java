@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.xuya.charge.phone.application.exception.ApplicationException;
 import com.xuya.charge.phone.application.service.CustomerApplicationService;
 import com.xuya.charge.phone.constant.ReturnCode;
+import com.xuya.charge.phone.domain.model.customer.Customer;
 import com.xuya.charge.phone.domain.repository.ICustomerRepository;
 import com.xuya.charge.phone.infra.util.SummaryUtils;
 import com.xuya.charge.phone.intf.dto.QueryBalanceCommand;
@@ -21,12 +22,14 @@ public class CustomerApplicationServiceImpl implements CustomerApplicationServic
 	@Override
 	public BigDecimal currentBalance(QueryBalanceCommand command) throws ApplicationException {
 		Long customerId = command.getCid();
-		String secret = customerRepository.queryClientSecret(customerId);
-		checkQueryBalanceRequest(customerId,secret,command.getSign());
-		return customerRepository.currentBalance(customerId);
+		Customer customer = new Customer(customerId, customerRepository);
+		String secret = customer.getClient().getSecret();
+		String sign = command.getSign();
+		checkQueryBalanceRequest(customerId, secret, sign);
+		return customer.getBalance();
 	}
 	
-	public void checkQueryBalanceRequest(Long customerId, String secret, String sign) throws ApplicationException {
+	private void checkQueryBalanceRequest(Long customerId, String secret, String sign) throws ApplicationException {
 		String signString = customerId + secret;
 		String newSign = SummaryUtils.getMD5Summary(signString);
 		if (!newSign.equalsIgnoreCase(sign)) {

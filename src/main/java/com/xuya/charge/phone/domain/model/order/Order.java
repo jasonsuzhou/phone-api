@@ -6,8 +6,10 @@ public class Order {
 
 	private Long id;
 	private String orderId;
+	private String status;
+	private String errorMessage;
 	private String phone;
-	private Integer cardnum;
+	private Integer money;
 	private Date creationDate;
 	private OrderCustomer orderCustomer;
 
@@ -15,11 +17,16 @@ public class Order {
 		this.orderCustomer = orderCustomer;
 	}
 	
-	public Order create(String phone, Integer cardnum) {
+	public Order(String status, String message) {
+		this.setStatus(status);
+		this.setErrorMessage(message);
+	}
+	
+	public Order create(String phone, Integer money) {
 		this.setOrderId("");// TODO
 		this.setCreationDate(new Date());
 		this.setPhone(phone);
-		this.setCardnum(cardnum);
+		this.setMoney(money);
 		return this;
 	}
 
@@ -39,6 +46,22 @@ public class Order {
 		this.orderId = orderId;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -47,12 +70,12 @@ public class Order {
 		this.phone = phone;
 	}
 
-	public Integer getCardnum() {
-		return cardnum;
+	public Integer getMoney() {
+		return money;
 	}
 
-	public void setCardnum(Integer cardnum) {
-		this.cardnum = cardnum;
+	public void setMoney(Integer money) {
+		this.money = money;
 	}
 
 	public Date getCreationDate() {

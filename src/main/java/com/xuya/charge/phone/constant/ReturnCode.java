@@ -8,6 +8,7 @@ public class ReturnCode {
 	public static final String PHONE_BLACK = "00004";
 	
 	public static final String SYSTEM_ERROR = "50000";
+	public static final String SYSTEM_MAINTAIN = "50001";
 	
 
 }

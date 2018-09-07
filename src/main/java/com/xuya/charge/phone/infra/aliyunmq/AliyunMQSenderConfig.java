@@ -15,7 +15,7 @@ public class AliyunMQSenderConfig {
 	private String secretKey;
 
 	@Bean
-	@Qualifier("orderSender")
+	@Qualifier("orderCreatedSender")
 	public AliyunMQMsgSender orderSender() {
 		if (StringUtils.isNotBlank(accessKey) && StringUtils.isNotBlank(secretKey)) {
 			AliyunMQMsgSender sender = new AliyunMQMsgSender("FLUX_CALLBACK");

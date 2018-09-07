@@ -14,6 +14,7 @@ import com.xuya.charge.phone.constant.ReturnCode;
 import com.xuya.charge.phone.intf.dto.OrderResultDTO;
 import com.xuya.charge.phone.intf.dto.QueryOrderResultCommand;
 import com.xuya.charge.phone.intf.dto.Result;
+import com.xuya.charge.phone.intf.dto.SubmitOrderCommand;
 import com.xuya.charge.phone.intf.exception.RestfulRequestException;
 
 @RestController
@@ -37,6 +38,22 @@ public class OrderController {
 		return new Result.Builder().status(0).code(ReturnCode.SUCCESS)
 				.addPayloadData("result", dto.getStatus())
 				.addPayloadData("desc", dto.getMessage())
+				.build();
+	}
+	
+	@RequestMapping(value="/submit", method=RequestMethod.GET)
+	public Result submitOrder(@Valid SubmitOrderCommand command, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return new Result.Builder().buildError(ReturnCode.PARAM_INCORRECT, bindingResult.getFieldError().getDefaultMessage());
+		}
+		String orderId = null;
+		try {
+			orderId = orderApplicationService.submitOrder(command);
+		} catch (ApplicationException e) {
+			throw new RestfulRequestException(e.getCode(), e.getMessage());
+		}
+		return new Result.Builder().status(0).code(ReturnCode.SUCCESS)
+				.addPayloadData("orderId", orderId)
 				.build();
 	}
 

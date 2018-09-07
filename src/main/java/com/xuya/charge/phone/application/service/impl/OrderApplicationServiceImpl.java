@@ -3,9 +3,9 @@ package com.xuya.charge.phone.application.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xuya.charge.phone.application.assembler.OrderAssembler;
 import com.xuya.charge.phone.application.exception.ApplicationException;
 import com.xuya.charge.phone.application.service.OrderApplicationService;
-import com.xuya.charge.phone.constant.OrderStatusEnum;
 import com.xuya.charge.phone.constant.ReturnCode;
 import com.xuya.charge.phone.domain.model.order.Order;
 import com.xuya.charge.phone.domain.repository.IOrderRepository;
@@ -23,6 +23,9 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 	@Autowired
 	private CustomerDomainService customerDomainService;
 	
+	@Autowired
+	private OrderAssembler orderAssembler;
+	
 	@Override
 	public OrderResultDTO queryOrderResult(QueryOrderResultCommand command) throws ApplicationException {
 		Long customerId = command.getCid();
@@ -31,22 +34,10 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		String sign = command.getSign();
 		checkQueryOrderResultRequest(customerId, orderId, secret, sign);
 		Order order = orderRepository.findOrder(orderId);
-		OrderResultDTO dto = new OrderResultDTO();
-		if (order == null) {
-			dto.setStatus(OrderStatusEnum.PROCESSING);
-		} else {
-			switch (order.getStatus()) {
-			    case "处理完成":dto.setStatus(OrderStatusEnum.SUCCESS);break;
-			    case "处理中":dto.setStatus(OrderStatusEnum.PROCESSING);break;
-			    case "处理失败":
-			    	dto.setStatus(OrderStatusEnum.FAILED);
-			    	dto.setMessage(order.getErrorMessage());
-			    	break;
-				default:dto.setStatus(OrderStatusEnum.UNKNOWN);
-			}
-		}
-		return dto;
+		return orderAssembler.assembleOrderResultDTO(order);
 	}
+
+	
 	
 	private void checkQueryOrderResultRequest(Long customerId,String orderId, String secret, String sign) throws ApplicationException {
 		String signString = customerId + orderId + secret;

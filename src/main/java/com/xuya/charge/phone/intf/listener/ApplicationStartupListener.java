@@ -2,15 +2,17 @@ package com.xuya.charge.phone.intf.listener;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 import com.xuya.charge.phone.infra.cache.guava.ClientCache;
+import com.xuya.charge.phone.infra.cache.guava.PhoneBlackCache;
 import com.xuya.charge.phone.infra.cache.guava.WhiteIPCache;
 import com.xuya.charge.phone.infra.dao.ClientRepository;
+import com.xuya.charge.phone.infra.dao.PhoneBlackRepository;
 import com.xuya.charge.phone.infra.dao.WhiteIPRepository;
 import com.xuya.charge.phone.infra.dao.entity.Client;
+import com.xuya.charge.phone.infra.dao.entity.PhoneBlack;
 import com.xuya.charge.phone.infra.dao.entity.WhiteIP;
 
 public class ApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -29,6 +31,13 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		if (listIP != null) {
 			listIP.forEach(ip -> {
 				WhiteIPCache.put(String.valueOf(ip.getId()), ip.getIps());
+			});
+		}
+		PhoneBlackRepository phoneBlackRepository = event.getApplicationContext().getBean(PhoneBlackRepository.class);
+		List<PhoneBlack> listPhoneBlack = phoneBlackRepository.findAll();
+		if (listPhoneBlack != null) {
+			listPhoneBlack.forEach(phone -> {
+				PhoneBlackCache.put(phone.getPhone(), "0");
 			});
 		}
 	}

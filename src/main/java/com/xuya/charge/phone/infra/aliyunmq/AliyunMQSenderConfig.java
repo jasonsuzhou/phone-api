@@ -15,8 +15,7 @@ public class AliyunMQSenderConfig {
 	private String secretKey;
 
 	@Bean
-	@Qualifier("orderCreatedSender")
-	public AliyunMQMsgSender orderSender() {
+	public AliyunMQMsgSender orderCreatedSender() {
 		if (StringUtils.isNotBlank(accessKey) && StringUtils.isNotBlank(secretKey)) {
 			AliyunMQMsgSender sender = new AliyunMQMsgSender("FLUX_CALLBACK");
 			sender.initProducer("PID_FLUX_CALLBACK", accessKey, secretKey);
@@ -27,7 +26,6 @@ public class AliyunMQSenderConfig {
 	}
 	
 	@Bean
-	@Qualifier("providerCallbackSender")
 	public AliyunMQMsgSender providerCallbackSender() {
 		if (StringUtils.isNotBlank(accessKey) && StringUtils.isNotBlank(secretKey)) {
 			AliyunMQMsgSender sender = new AliyunMQMsgSender("FLUX_CALLBACK");

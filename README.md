@@ -6,7 +6,16 @@
 
 由于商业用途，我只准备开源接口工程
 
-Reference
+# 如何使用
+
+下载好工程在配置文件完善好数据库连接信息还有阿里云消息队列的accesskey和secretkey
+
+# TODO List
+
+- log的优化和配置（目前是默认配置）
+- 分布式缓存（目前用的guava cache本地缓存）
+
+# Reference
 
 http://blog.didispace.com/impl-ddd-event/
 

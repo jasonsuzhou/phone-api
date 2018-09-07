@@ -20,7 +20,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(getWhiteIPChecker()).addPathPatterns("/**");
+		registry.addInterceptor(getWhiteIPChecker()).excludePathPatterns("/api/provider/order/back/**").addPathPatterns("/**");
 		registry.addInterceptor(getQueryLimitInterceptor()).addPathPatterns("/api/customer/balance","/api/order/result");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}

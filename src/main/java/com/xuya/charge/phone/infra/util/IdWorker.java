@@ -2,29 +2,36 @@ package com.xuya.charge.phone.infra.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class IdWorker {
 
 	private static long lastTimes = 0;
-	private static int currentSequence = 100;
+	private static AtomicInteger currentSequence = new AtomicInteger(100);
 
-	public static synchronized String nextId(String prefix) {
+	public static String nextId(String prefix) {
 		StringBuffer sb = new StringBuffer(prefix);
 		long currentTimes = System.currentTimeMillis();
 		if (lastTimes == currentTimes) {
-			++currentSequence;
-			if (currentSequence > 999) {
+			int result = currentSequence.incrementAndGet();
+			if (result > 999) {
 				currentTimes = genTimes(lastTimes);
 			}
+			sb.append(getTimeString(currentTimes)).append(result);
 		} else {
 			lastTimes = currentTimes;
-			currentSequence = 100;
+			currentSequence = new AtomicInteger(100);
+			sb.append(getTimeString(currentTimes)).append(currentSequence);
 		}
-		sb.append(getTimeString(currentTimes)).append(currentSequence);
 		return sb.toString();
 	}
 
 	private static long genTimes(long lastTimes) {
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			// do nothing
+		}
 		long times = System.currentTimeMillis();
 		if (times == lastTimes) {
 			return genTimes(lastTimes);

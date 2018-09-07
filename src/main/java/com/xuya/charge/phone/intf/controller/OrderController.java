@@ -24,7 +24,7 @@ public class OrderController {
 	private OrderApplicationService orderApplicationService;
 	
 	@RequestMapping(value="/result", method=RequestMethod.GET)
-	public Result queryBalance(@Valid QueryOrderResultCommand command, BindingResult bindingResult) {
+	public Result queryOrderStatus(@Valid QueryOrderResultCommand command, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return new Result.Builder().buildError(ReturnCode.PARAM_INCORRECT, bindingResult.getFieldError().getDefaultMessage());
 		}

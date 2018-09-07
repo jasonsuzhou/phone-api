@@ -16,13 +16,25 @@ public class AliyunMQSenderConfig {
 
 	@Bean
 	@Qualifier("orderSender")
-	public AliyunMQMsgSender aliyunMQMsgSender() {
+	public AliyunMQMsgSender orderSender() {
 		if (StringUtils.isNotBlank(accessKey) && StringUtils.isNotBlank(secretKey)) {
 			AliyunMQMsgSender sender = new AliyunMQMsgSender("FLUX_CALLBACK");
 			sender.initProducer("PID_FLUX_CALLBACK", accessKey, secretKey);
 			return sender;
 		} else {
-			return null;
+			return new AliyunMQMsgSender();
+		}
+	}
+	
+	@Bean
+	@Qualifier("providerCallbackSender")
+	public AliyunMQMsgSender providerCallbackSender() {
+		if (StringUtils.isNotBlank(accessKey) && StringUtils.isNotBlank(secretKey)) {
+			AliyunMQMsgSender sender = new AliyunMQMsgSender("FLUX_CALLBACK");
+			sender.initProducer("PID_FLUX_CALLBACK", accessKey, secretKey);
+			return sender;
+		} else {
+			return new AliyunMQMsgSender();
 		}
 	}
 

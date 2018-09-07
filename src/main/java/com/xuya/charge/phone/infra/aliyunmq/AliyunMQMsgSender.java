@@ -15,6 +15,8 @@ public class AliyunMQMsgSender {
 	private Producer producer;
 	private String topicName;
 
+	public AliyunMQMsgSender() {}
+	
 	public AliyunMQMsgSender(String topicName) {
 		this.topicName = topicName;
 	}

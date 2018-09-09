@@ -4,22 +4,34 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.xuya.charge.phone.infra.cache.CacheKeys;
 import com.xuya.charge.phone.infra.cache.guava.ClientCache;
-import com.xuya.charge.phone.infra.cache.guava.WhiteIPCache;
 
 @Component
 public class ClientAndIPValidator {
+	
+	@Autowired
+	StringRedisTemplate authInfoStringRedisTemplate;
 	
 	public String isValid(String cid, String ip) {
 		if (StringUtils.isBlank(cid)) {
 			return "client id is not valid";
 		}
-		if (StringUtils.isBlank(ClientCache.get(cid))) {
+		String authInfo = authInfoStringRedisTemplate.opsForValue().get(CacheKeys.getAuthClientKey(cid));
+		if (StringUtils.isBlank(authInfo)) {
 			return "client id is not valid";
 		} else {
-			String ips = WhiteIPCache.get(cid);
+			// {"secret":"xx","ips":"xx"}
+			JSONObject json = JSON.parseObject(authInfo);
+			String secret = json.getString("secret");
+			ClientCache.put(cid, secret);
+			String ips = json.getString("ips");
 			if (StringUtils.isNotBlank(ips)) {
 				boolean valid = isValidIP(ips, ip);
 				if (!valid) {

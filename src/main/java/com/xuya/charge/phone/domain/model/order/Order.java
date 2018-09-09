@@ -5,6 +5,7 @@ import java.util.Date;
 public class Order {
 
 	private Long id;
+	private Long cid;
 	private String orderNo;
 	private String orderId;
 	private String status;
@@ -21,7 +22,8 @@ public class Order {
 		this.setErrorMessage(message);
 	}
 	
-	public Order create(String orderNo, String orderId, String phone, String money, String pcode) {
+	public Order create(Long cid, String orderNo, String orderId, String phone, String money, String pcode) {
+		this.setCid(cid);
 		this.setOrderNo(orderNo);
 		this.setOrderId(orderId);
 		this.setCreationDate(new Date());
@@ -39,6 +41,14 @@ public class Order {
 		this.id = id;
 	}
 	
+	public Long getCid() {
+		return cid;
+	}
+
+	public void setCid(Long cid) {
+		this.cid = cid;
+	}
+
 	public String getOrderNo() {
 		return orderNo;
 	}

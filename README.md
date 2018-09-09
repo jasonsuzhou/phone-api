@@ -13,7 +13,6 @@
 # TODO List
 
 - log的优化和配置（目前是默认配置）
-- 分布式缓存（目前用的guava cache本地缓存）
 
 # Reference
 

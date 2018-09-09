@@ -15,7 +15,6 @@ import com.xuya.charge.phone.domain.model.order.event.OrderCreatedEvent;
 import com.xuya.charge.phone.domain.model.order.event.OrderEventPublisher;
 import com.xuya.charge.phone.domain.repository.IOrderRepository;
 import com.xuya.charge.phone.domain.service.CustomerDomainService;
-import com.xuya.charge.phone.infra.cache.guava.PhoneBlackCache;
 import com.xuya.charge.phone.infra.util.IdWorker;
 import com.xuya.charge.phone.infra.util.SummaryUtils;
 import com.xuya.charge.phone.intf.dto.OrderResultDTO;
@@ -59,7 +58,7 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		String sign = command.getSign();
 		checkSubmitOrderRequest(customerId, orderNo, phone, money, secret, sign);
 		String orderId = IdWorker.nextId(env.getProperty("machine.id"));
-		Order order = new Order().create(orderNo, orderId, phone, money, pcode);
+		Order order = new Order().create(customerId, orderNo, orderId, phone, money, pcode);
 		OrderEventPublisher.getInstance().publish(new OrderCreatedEvent(order));
 		return orderId;
 	}
@@ -73,9 +72,11 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 	}
 	
 	private void checkSubmitOrderRequest(Long customerId,String orderNo,String phone, String money, String secret, String sign) throws ApplicationException {
+		/* phone black check moved to phone-service module
 		if ("0".equals(PhoneBlackCache.get(phone))) {
 			throw new ApplicationException(ReturnCode.PHONE_BLACK,"phone is in black list");
 		}
+		*/
 		String signString = customerId + orderNo + phone + money + secret;
 		String newSign = SummaryUtils.getMD5Summary(signString);
 		if (!newSign.equalsIgnoreCase(sign)) {

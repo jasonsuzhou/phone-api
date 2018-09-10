@@ -7,7 +7,7 @@ public class SubmitOrderCommand {
 	@NotNull(message = "client id cannot be empty")
 	private Long cid;
 	@NotNull(message = "order no. cannot be empty")
-	private String orderNo;
+	private String orderno;
 	@NotNull(message = "phone cannot be empty")
 	private String phone;
 	@NotNull(message = "money cannot be empty")
@@ -24,12 +24,12 @@ public class SubmitOrderCommand {
 		this.cid = cid;
 	}
 
-	public String getOrderNo() {
-		return orderNo;
+	public String getOrderno() {
+		return orderno;
 	}
 
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setOrderno(String orderno) {
+		this.orderno = orderno;
 	}
 
 	public String getPhone() {

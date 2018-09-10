@@ -35,7 +35,7 @@ public class CustomerController {
 		} catch (ApplicationException e) {
 			throw new RestfulRequestException(e.getCode(), e.getMessage());
 		}
-		return new Result.Builder().status(0).code(ReturnCode.SUCCESS).addPayloadData("balance", balance).build();
+		return new Result.Builder().status(0).code(ReturnCode.SUCCESS).addPayloadData("balance", balance.toString()).build();
 	}
 
 }

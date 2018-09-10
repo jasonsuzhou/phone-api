@@ -18,7 +18,7 @@ public class OrderRepository implements IOrderRepository {
 
 	@Override
 	public Order findOrder(String orderId) {
-		String sql = "select status, error_message from phone_order where order_id = ?";
+		String sql = "select status, error_message from flux_order where order_id = ?";
 		return this.jdbcTemplate.queryForObject(sql, new Object[] { orderId }, new int[] { Types.VARCHAR }, new OrderMapper());
 	}
 

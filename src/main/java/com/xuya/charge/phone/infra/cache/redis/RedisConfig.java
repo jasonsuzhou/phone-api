@@ -36,6 +36,14 @@ public class RedisConfig {
 		return new StringRedisTemplate(redisConnectionFactory(hostName,port,password, 2));
 	}
 	
+	@Bean(name="queueRedisTemplate")
+	public StringRedisTemplate queueRedisTemplate(
+			@Value("${spring.redis.host}") String hostName,
+			@Value("${spring.redis.port}") int port,
+			@Value("${spring.redis.password}") String password) {
+		return new StringRedisTemplate(redisConnectionFactory(hostName,port,password, 5));
+	}
+	
 	public RedisConnectionFactory redisConnectionFactory(String hostName,int port,String password, int index) {
         RedisStandaloneConfiguration redisStandaloneConfiguration = redisStandaloneConfiguration(hostName, port, password);
         redisStandaloneConfiguration.setDatabase(index);

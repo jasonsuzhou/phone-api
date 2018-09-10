@@ -30,7 +30,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		List<WhiteIP> listIP = whiteIPRepository.findAll();
 		if (listIP != null) {
 			listIP.forEach(ip -> {
-				WhiteIPCache.put(String.valueOf(ip.getId()), ip.getIps());
+				WhiteIPCache.put(String.valueOf(ip.getId()), ip.getIps() == null ? "" : ip.getIps());
 			});
 		}
 		PhoneBlackRepository phoneBlackRepository = event.getApplicationContext().getBean(PhoneBlackRepository.class);

@@ -2,6 +2,7 @@ package com.xuya.charge.phone.application.service.impl;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 	public OrderResultDTO queryOrderResult(QueryOrderResultCommand command) throws ApplicationException {
 		Long customerId = command.getCid();
 		String secret = customerDomainService.getClientSecret(customerId);
-		String orderId = command.getOrderId();
+		String orderId = command.getOrderid();
 		String sign = command.getSign();
 		checkQueryOrderResultRequest(customerId, orderId, secret, sign);
 		Order order = orderRepository.findOrder(orderId);
@@ -51,12 +52,12 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 	public String submitOrder(@Valid SubmitOrderCommand command) throws ApplicationException {
 		Long customerId = command.getCid();
 		String secret = customerDomainService.getClientSecret(customerId);
-		String orderNo = command.getOrderNo();
+		String orderNo = command.getOrderno();
 		String phone = command.getPhone();
 		String money = command.getMoney();
 		String pcode = command.getPcode();
 		String sign = command.getSign();
-		checkSubmitOrderRequest(customerId, orderNo, phone, money, secret, sign);
+		checkSubmitOrderRequest(customerId, orderNo, phone, money, secret, pcode, sign);
 		String orderId = IdWorker.nextId(env.getProperty("machine.id"));
 		Order order = new Order().create(customerId, orderNo, orderId, phone, money, pcode);
 		OrderEventPublisher.getInstance().publish(new OrderCreatedEvent(order));
@@ -71,13 +72,19 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		}
 	}
 	
-	private void checkSubmitOrderRequest(Long customerId,String orderNo,String phone, String money, String secret, String sign) throws ApplicationException {
+	private void checkSubmitOrderRequest(Long customerId,String orderNo,String phone, String money, String secret, String pcode, String sign) throws ApplicationException {
 		/* phone black check moved to phone-service module
 		if ("0".equals(PhoneBlackCache.get(phone))) {
 			throw new ApplicationException(ReturnCode.PHONE_BLACK,"phone is in black list");
 		}
 		*/
-		String signString = customerId + orderNo + phone + money + secret;
+		String signString = null;
+		if (StringUtils.isBlank(pcode) || "null".equals(pcode)) {
+			signString = customerId + orderNo + phone + money + secret;
+		} else {
+			signString = customerId + orderNo + phone + money + pcode + secret;
+		}
+		
 		String newSign = SummaryUtils.getMD5Summary(signString);
 		if (!newSign.equalsIgnoreCase(sign)) {
 			throw new ApplicationException(ReturnCode.SIGN_INCORRECT,"sign not correct");

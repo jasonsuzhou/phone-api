@@ -8,7 +8,7 @@ public class QueryOrderResultCommand {
 	@NotNull(message = "client id cannot be empty")
 	private Long cid;
 	@NotNull(message = "order id cannot be empty")
-	private String orderId;
+	private String orderid;
 	@NotBlank(message = "sign cannot be empty")
 	private String sign;
 
@@ -20,12 +20,12 @@ public class QueryOrderResultCommand {
 		this.cid = cid;
 	}
 	
-	public String getOrderId() {
-		return orderId;
+	public String getOrderid() {
+		return orderid;
 	}
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setOrderid(String orderid) {
+		this.orderid = orderid;
 	}
 
 	public String getSign() {

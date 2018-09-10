@@ -14,6 +14,21 @@
 
 - log的优化和配置（目前是默认配置）
 
+# How to run
+- 开发环境：
+
+```
+java -jar phone-api-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+
+```
+
+- 生产环境：
+
+```
+nohup java -jar phone-api-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod >/dev/null &
+```
+
+
 # Reference
 
 http://blog.didispace.com/impl-ddd-event/

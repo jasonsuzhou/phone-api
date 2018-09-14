@@ -12,6 +12,7 @@ public class SubmitOrderCommand {
 	private String phone;
 	@NotNull(message = "money cannot be empty")
 	private String money;
+	@NotNull(message = "pcode cannot be empty")
 	private String pcode;
 	@NotBlank(message = "sign cannot be empty")
 	private String sign;

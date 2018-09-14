@@ -14,6 +14,8 @@ public class SubmitOrderCommand {
 	private String money;
 	@NotNull(message = "pcode cannot be empty")
 	private String pcode;
+	@NotNull(message = "type cannot be empty")
+	private String type;
 	@NotBlank(message = "sign cannot be empty")
 	private String sign;
 
@@ -55,6 +57,14 @@ public class SubmitOrderCommand {
 
 	public void setPcode(String pcode) {
 		this.pcode = pcode;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getSign() {

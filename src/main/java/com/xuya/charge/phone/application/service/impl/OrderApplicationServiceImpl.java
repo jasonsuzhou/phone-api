@@ -56,8 +56,9 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		String phone = command.getPhone();
 		String money = command.getMoney();
 		String pcode = command.getPcode();
+		String type = command.getType();
 		String sign = command.getSign();
-		checkSubmitOrderRequest(customerId, orderNo, phone, money, secret, pcode, sign);
+		checkSubmitOrderRequest(customerId, orderNo, phone, money, secret, pcode,type, sign);
 		String orderId = IdWorker.nextId(env.getProperty("machine.id"));
 		Order order = new Order().create(customerId, orderNo, orderId, phone, money, pcode);
 		OrderEventPublisher.getInstance().publish(new OrderCreatedEvent(order));
@@ -72,7 +73,7 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		}
 	}
 	
-	private void checkSubmitOrderRequest(Long customerId,String orderNo,String phone, String money, String secret, String pcode, String sign) throws ApplicationException {
+	private void checkSubmitOrderRequest(Long customerId,String orderNo,String phone, String money, String secret, String pcode,String type, String sign) throws ApplicationException {
 		/* phone black check moved to phone-service module
 		if ("0".equals(PhoneBlackCache.get(phone))) {
 			throw new ApplicationException(ReturnCode.PHONE_BLACK,"phone is in black list");
@@ -80,9 +81,9 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		*/
 		String signString = null;
 		if (StringUtils.isBlank(pcode) || "null".equals(pcode)) {
-			signString = customerId + orderNo + phone + money + secret;
+			signString = customerId + orderNo + phone + money + type + secret;
 		} else {
-			signString = customerId + orderNo + phone + money + pcode + secret;
+			signString = customerId + orderNo + phone + money + pcode + type + secret;
 		}
 		
 		String newSign = SummaryUtils.getMD5Summary(signString);

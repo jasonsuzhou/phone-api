@@ -60,7 +60,7 @@ public class OrderApplicationServiceImpl implements OrderApplicationService {
 		String sign = command.getSign();
 		checkSubmitOrderRequest(customerId, orderNo, phone, money, secret, pcode,type, sign);
 		String orderId = IdWorker.nextId(env.getProperty("machine.id"));
-		Order order = new Order().create(customerId, orderNo, orderId, phone, money, pcode);
+		Order order = new Order().create(customerId, orderNo, orderId, phone, money, pcode, type);
 		OrderEventPublisher.getInstance().publish(new OrderCreatedEvent(order));
 		return orderId;
 	}

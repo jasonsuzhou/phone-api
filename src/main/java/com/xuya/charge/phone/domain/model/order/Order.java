@@ -13,6 +13,7 @@ public class Order {
 	private String phone;
 	private String money;
 	private String pcode;
+	private String type;
 	private Date creationDate;
 	
 	public Order() {}
@@ -22,7 +23,7 @@ public class Order {
 		this.setErrorMessage(message);
 	}
 	
-	public Order create(Long cid, String orderNo, String orderId, String phone, String money, String pcode) {
+	public Order create(Long cid, String orderNo, String orderId, String phone, String money, String pcode, String type) {
 		this.setCid(cid);
 		this.setOrderNo(orderNo);
 		this.setOrderId(orderId);
@@ -30,6 +31,7 @@ public class Order {
 		this.setPhone(phone);
 		this.setMoney(money);
 		this.setPcode(pcode);
+		this.setType(type);
 		return this;
 	}
 
@@ -103,6 +105,14 @@ public class Order {
 
 	public void setPcode(String pcode) {
 		this.pcode = pcode;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Date getCreationDate() {

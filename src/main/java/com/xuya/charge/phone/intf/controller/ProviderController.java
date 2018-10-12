@@ -8,10 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Charsets;
@@ -28,8 +27,7 @@ public class ProviderController {
 	@Autowired
 	private ProviderApplicationService providerApplicationServiceImpl;
 	
-	@GetMapping("/order/back/{channelId}")
-	@PostMapping("/order/back/{channelId}")
+	@RequestMapping(value="/order/back/{channelId}",method= {RequestMethod.GET,RequestMethod.POST})
 	public String updateOrderResult(@PathVariable("channelId") String channelId, HttpServletRequest request, HttpServletResponse reponse) {
 		String headString = request.getQueryString();
 		String bodyString = null;

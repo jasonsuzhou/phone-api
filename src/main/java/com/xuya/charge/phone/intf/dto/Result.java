@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Result {
-
 	private Integer status;
 	private String code;
 	private String desc;

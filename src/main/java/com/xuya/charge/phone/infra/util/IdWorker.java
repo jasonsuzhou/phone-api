@@ -9,7 +9,7 @@ public class IdWorker {
 	private static long lastTimes = 0;
 	private static AtomicInteger currentSequence = new AtomicInteger(100);
 
-	public static String nextId(String prefix) {
+	public synchronized static String nextId(String prefix) {
 		StringBuffer sb = new StringBuffer(prefix);
 		long currentTimes = System.currentTimeMillis();
 		if (lastTimes == currentTimes) {
